@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="py.flask" />
+          <option value="pythoncom" />
         </list>
       </option>
     </inspection_tool>
