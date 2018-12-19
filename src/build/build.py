@@ -8,7 +8,6 @@ import os
 import paramiko
 
 
-
 def local(file):
   os.environ['HOME']
   os.path.expandvars('$HOME')
@@ -51,9 +50,13 @@ def dev(ip, uname, file, port):
 
 def ssh2(ip, username, passwd, cmd):
   try:
+    home = os.path.expanduser('~')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(ip, 22, username, passwd, timeout=5)
+    pkey = home + '/.ssh/xinzhili-dev.pem'
+    key = paramiko.RSAKey.from_private_key_file(pkey)
+    print(pkey)
+    ssh.connect(ip, username=username, timeout=5, pkey=key)
     for m in cmd:
       print("---------------")
       print(m)
@@ -76,6 +79,8 @@ def main(argv):
   user = ['user', '9005', 'ubuntu', '118']
   business = ['business', '8089', 'dev', '175']
   medical = ['medical', '9008', 'ubuntu', '162']
+  dpc = ['dpc', '9006', 'ubuntu', '118']
+  chat = ['chat', '9011', 'ubuntu', '52']
   ip = "172.16.10."
   try:
     if argv[1] == 'doctor':
@@ -88,14 +93,18 @@ def main(argv):
       arr = business
     if argv[1] == 'medical':
       arr = medical
+    if argv[1] == 'dpc':
+      arr = dpc
+    if argv[1] == 'chat':
+      arr = chat
     else:
-      print('参数为 doctor patient user business medical')
+      print('参数应为 doctor patient user business medical dpc')
     name = arr[0]
     port = arr[1]
     uname = arr[2]
     ip = ip + arr[3]
   except:
-    print('参数为 doctor patient user business medical')
+    print('参数应为 doctor patient user business medical dpc')
   local(name)
   dev(ip, uname, name, port)
 
