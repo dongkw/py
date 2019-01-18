@@ -6,6 +6,7 @@
         <list>
           <option value="py.flask" />
           <option value="pythoncom" />
+          <option value="keras.activations.VGG16" />
         </list>
       </option>
     </inspection_tool>
